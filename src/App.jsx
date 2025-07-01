@@ -16,7 +16,7 @@ export default function App() {
   }
 
   const handleEditTodo =(editIndex) => { 
-    const valueToBeEdited = todos[editIndex];
+    const valueToBeEdited = todos[editIndex]; //edit index get the index at which we are deleting 
     setTodoValue(valueToBeEdited);
     handleDeleteTodo(editIndex);
   }
