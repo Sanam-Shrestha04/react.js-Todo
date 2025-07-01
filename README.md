@@ -5,7 +5,6 @@
 ### i. Hooks
 - `useState` – Manage the tasks' state
 - `useEffect` – Sync tasks with localStorage
-- Custom hooks (if needed) for reusability
 
 ### ii. Components
 - `App` – Root component
