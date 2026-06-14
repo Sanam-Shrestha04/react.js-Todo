@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-export default function TodoInputs({handleAddTodos, setTodoValue, todoValue}) {
+export default function TodoInputs({ handleAddTodos, setTodoValue, todoValue }) {
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleAddTodos(todoValue);
+    }
+  };
 
   return (
-    <header>
-        <input 
-          value={todoValue} //bind todoValue means capture todo value
-          onChange={(e) => {setTodoValue(e.target.value)}}  //listens the changes and whenever the value of input changes it calls setTodoValue function and e.target.value pass the new text that get entered into our input 
-          placeholder='Enter todo...'
-        />
-        <button onClick={() =>{
-          handleAddTodos(todoValue) // currently not defined, the value we type to add in list
-          setTodoValue('')
-          }}>Add
-        </button>
-    </header>
+    <div className="inputContainer">
+      <input
+        value={todoValue}
+        onChange={(e) => setTodoValue(e.target.value)}
+        onKeyPress={handleKeyPress}
+        placeholder='Enter Task...'
+      />
+      <button onClick={() => handleAddTodos(todoValue)}>🎀</button>
+    </div>
   )
 }

@@ -1,117 +1,154 @@
-* {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  color: #202124;
-}
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&display=swap');
 
-h1,
-h2,
-h3,
-input,
-button {
-  font-family: 'Press Start 2P', system-ui;
+body {
+  background: url('./assets/bow.png');
+  background-repeat: repeat;
+  background-size: 300px;
+  background-attachment: fixed;
+  font-family: 'Quicksand', sans-serif;
+  color: #5c2d45;
 }
 
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 14px;
-  background: #eff6ff;
-  gap: 14px;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
 }
 
-header {
-  display: flex;
-  align-items: stretch;
-}
-
-header,
-.main {
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-  gap: 14px;
-}
-
-header input {
-  flex: 1;
-  border-radius: 14px;
-  outline: none;
-  width: 100%;
-}
-
-header button {
-  border-radius: 14px;
-  background: transparent;
-  transition-duration: 200ms;
-  cursor: pointer;
-}
-
-header button:hover {
-  opacity: 0.7;
-}
-
-header button,
-header input {
-  padding: 14px 18px;
-  border: none;
-  outline: none;
+.dateBar {
   background: white;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.4em;
+  color: #d6336c;
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.4);
 }
 
-p {
-  font-size: 0.9em;
+.inputContainer {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 860px; /* matches .main max-width accounting for button */
+}
+
+.inputContainer input {
+  flex: 1;
+  border-radius: 20px;
+  padding: 20px 18px;
+  border: 2px solid #ffc0cb;
+  background: #fff;
+  font-size: 1.4em;
+  color: #d6336c;
+  box-sizing: border-box;
+}
+
+.inputContainer input::placeholder {
+  color: #d6336c;
+  font-style: italic;
+}
+
+.inputContainer button {
+  border-radius: 50%;
+  background: #ff69b4;
+  color: white;
+  border: none;
+  width: 55px;
+  height: 55px;
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  flex-shrink: 0;
+}
+
+.inputContainer button:hover {
+  background: #d6336c;
+  transform: scale(1.1);
 }
 
 .main {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 20px;
+  width: 100%;
+  max-width: 860px;
 }
 
 .todoItem {
+  background: white;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.4);
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px;
-  border-radius: 14px;
-  background: white;
+  justify-content: space-between;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.todoItem p {
+.todoText {
   flex: 1;
+  font-size: 1.4em;
+  color: #d6336c;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #f708b3;
+  opacity: 0.6;
 }
 
 .actionsContainer {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .actionsContainer button {
-  transition-duration: 200ms;
   border: none;
-  background: transparent;
-  cursor: pointer;
+  background: #ff69b4;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
 }
 
 .actionsContainer button:hover {
-  opacity: 0.7;
+  background: #d6336c;
+  transform: scale(1.1);
 }
 
+/* Custom pink checkbox */
+input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ff69b4;
+  border-radius: 5px;
+  background: #ffe4ec;
+  cursor: pointer;
+  position: relative;
+}
 
+input[type="checkbox"]:checked {
+  background: #ff69b4;
+}
 
-@media (min-width: 640px) {
-
-  header button,
-  header input {
-    font-size: 1.2em;
-  }
-
-  p {
-    font-size: 1em;
-  }
+input[type="checkbox"]:checked::after {
+  content: "✔";
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  top: -2px;
+  left: 3px;
 }
