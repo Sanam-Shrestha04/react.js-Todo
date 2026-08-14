@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { NavLink, Routes, Route } from 'react-router-dom'
 import TodoList from './components/TodoList'
 import TodoInputs from './components/TodoInputs'
+import ExpenseTracker from './components/ExpenseTracker'
 
 export default function App() {
   const [todos, setTodos] = useState(() => {
@@ -46,6 +48,18 @@ export default function App() {
 
   return (
     <>
+      {/* Navigation bar */}
+      <nav>
+        <NavLink to="/" end>Todo</NavLink>
+        <NavLink to="/tracker">Expense Tracker</NavLink>
+      </nav>
+
+      {/* Page routes */}
+      <Routes>
+<Route
+  path="/"
+  element={
+    <div className="todoWrapper">
       <div className="dateBar">{today}</div>
       <TodoInputs
         handleAddTodos={handleAddTodos}
@@ -58,6 +72,11 @@ export default function App() {
         handleEditTodo={handleEditTodo}
         toggleComplete={toggleComplete}
       />
+    </div>
+  }
+/>
+        <Route path="/tracker" element={<ExpenseTracker />} />
+      </Routes>
     </>
   );
 }
