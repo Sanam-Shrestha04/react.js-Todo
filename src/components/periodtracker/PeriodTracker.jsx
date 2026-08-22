@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './PeriodTracker.css';
-import "./ExpenseTracker.css";
+import "../expenseTracker/ExpenseTracker.css";
 
 const PeriodTracker = () => {
   const [cycles, setCycles] = useState([]);

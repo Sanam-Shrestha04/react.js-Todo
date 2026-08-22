@@ -1,82 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavLink, Routes, Route } from "react-router-dom";
-import TodoList from "./components/TodoList";
-import TodoInputs from "./components/TodoInputs";
-import ExpenseTracker from "./components/ExpenseTracker";
-import PeriodTracker from "./components/PeriodTracker";
+import Todo from "./components/todo/Todo";
+import ExpenseTracker from "./components/expenseTracker/ExpenseTracker";
+import PeriodTracker from "./components/periodtracker/PeriodTracker";
 
 export default function App() {
-  const [todos, setTodos] = useState(() => {
-    const saved = localStorage.getItem("todos");
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [todoValue, setTodoValue] = useState("");
-
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
-  const handleAddTodos = (newTodo) => {
-    if (!newTodo.trim()) return;
-    setTodos((prevs) => [...prevs, { text: newTodo, completed: false }]);
-    setTodoValue("");
-  };
-
-  const handleDeleteTodo = (deleteIndex) => {
-    setTodos((prevs) => prevs.filter((_, index) => index !== deleteIndex));
-  };
-
-  const handleEditTodo = (editIndex) => {
-    const valueToBeEdited = todos[editIndex].text;
-    setTodoValue(valueToBeEdited);
-    handleDeleteTodo(editIndex);
-  };
-
-  const toggleComplete = (index) => {
-    setTodos((prevs) =>
-      prevs.map((todo, i) =>
-        i === index ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    );
-  };
-
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-
   return (
     <>
       {/* Navigation bar */}
       <nav>
-        <NavLink to="/" end>Todo</NavLink>
+        <NavLink to="/" end>
+          Todo
+        </NavLink>
         <NavLink to="/expense-tracker">Expense Tracker</NavLink>
         <NavLink to="/period-tracker">Period Tracker</NavLink>
       </nav>
 
       {/* Page routes */}
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="todoWrapper">
-              <div className="dateBar">{today}</div>
-              <TodoInputs
-                handleAddTodos={handleAddTodos}
-                todoValue={todoValue}
-                setTodoValue={setTodoValue}
-              />
-              <TodoList
-                handleDeleteTodo={handleDeleteTodo}
-                todos={todos}
-                handleEditTodo={handleEditTodo}
-                toggleComplete={toggleComplete}
-              />
-            </div>
-          }
-        />
+        <Route path="/" element={<Todo />} />
         <Route path="/expense-tracker" element={<ExpenseTracker />} />
         <Route path="/period-tracker" element={<PeriodTracker />} />
       </Routes>
