@@ -15,10 +15,21 @@ const ExpenseTracker = () => {
   const [editingId, setEditingId] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [date, setDate] = useState("");
-
+  // Load transactions from localStorage on mount, sorted by date (newest first)
   // Load transactions from localStorage on mount
   // Load transactions from localStorage on mount
   // Save transactions to localStorage whenever they change
+
+  useEffect(() => {
+    const savedTransactions = localStorage.getItem("transactions");
+    if (savedTransactions) {
+      setTransactions(
+        JSON.parse(savedTransactions).sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        ),
+      );
+    }
+  }, []);
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
   }, [transactions]);
@@ -82,12 +93,18 @@ const ExpenseTracker = () => {
     if (editingId) {
       // Update existing transaction
       setTransactions(
-        transactions.map((t) => (t.id === editingId ? transactionData : t)),
+        transactions
+          .map((t) => (t.id === editingId ? transactionData : t))
+          .sort((a, b) => new Date(b.date) - new Date(a.date)),
       );
       setEditingId(null);
     } else {
       // Add new transaction
-      setTransactions([transactionData, ...transactions]);
+      setTransactions(
+        [transactionData, ...transactions].sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        ),
+      );
     }
 
     // Reset form
