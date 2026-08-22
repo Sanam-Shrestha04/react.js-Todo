@@ -1,83 +1,89 @@
 // src/components/ExpenseTracker.jsx
-import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import './ExpenseTracker.css';
+import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import "./ExpenseTracker.css";
 
 const ExpenseTracker = () => {
-const [transactions, setTransactions] = useState(() => {
-    const saved = localStorage.getItem('transactions');
+  const [transactions, setTransactions] = useState(() => {
+    const saved = localStorage.getItem("transactions");
     return saved ? JSON.parse(saved) : [];
   });
-  const [type, setType] = useState('expense');
-  const [category, setCategory] = useState('');
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
+  const [type, setType] = useState("expense");
+  const [category, setCategory] = useState("");
+  const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
-  const [date, setDate] = useState('');
-
+  const [date, setDate] = useState("");
 
   // Load transactions from localStorage on mount
-// Load transactions from localStorage on mount
-// Save transactions to localStorage whenever they change
+  // Load transactions from localStorage on mount
+  // Save transactions to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    localStorage.setItem("transactions", JSON.stringify(transactions));
   }, [transactions]);
 
   // Save transactions to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    localStorage.setItem("transactions", JSON.stringify(transactions));
   }, [transactions]);
-  
+
   // Calculate totals
   const totalExpense = transactions
-    .filter(t => t.type === 'expense')
+    .filter((t) => t.type === "expense")
     .reduce((sum, t) => sum + parseFloat(t.amount), 0);
 
-const totalIncome = transactions
-    .filter(t => t.type === 'income' && t.category !== 'Investment')
+  const totalIncome = transactions
+    .filter((t) => t.type === "income" && t.category !== "Investment")
     .reduce((sum, t) => sum + parseFloat(t.amount), 0);
 
   const totalInvestment = transactions
-    .filter(t => t.category === 'Investment')
+    .filter((t) => t.category === "Investment")
     .reduce((sum, t) => sum + parseFloat(t.amount), 0);
 
   const savings = totalIncome - totalExpense;
 
   const categories = {
-    expense: ['Grocery', 'Travel', 'Lunch', 'Shopping', 'Other'],
-    income: ['Salary', 'Funding', 'Investment', 'Other']
+    expense: [
+      "Grocery",
+      "Travel",
+      "Office Lunch",
+      "Snack",
+      "Shopping",
+      "Other",
+    ],
+    income: ["Salary", "Funding", "Investment", "Other"],
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!category || !amount) {
-      alert('Please fill in all fields');
+      alert("Please fill in all fields");
       return;
     }
-const transactionDate = date ? new Date(date) : new Date();
-const transactionData = {
-  id: editingId || uuidv4(),
-  type,
-  category,
-  amount: parseFloat(amount),
-  description: description || category,
-  date: transactionDate.toISOString(),
-  formattedDate: transactionDate.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-};
+    const transactionDate = date ? new Date(date) : new Date();
+    const transactionData = {
+      id: editingId || uuidv4(),
+      type,
+      category,
+      amount: parseFloat(amount),
+      description: description || category,
+      date: transactionDate.toISOString(),
+      formattedDate: transactionDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
 
     if (editingId) {
       // Update existing transaction
-      setTransactions(transactions.map(t => 
-        t.id === editingId ? transactionData : t
-      ));
+      setTransactions(
+        transactions.map((t) => (t.id === editingId ? transactionData : t)),
+      );
       setEditingId(null);
     } else {
       // Add new transaction
@@ -85,18 +91,18 @@ const transactionData = {
     }
 
     // Reset form
-    setCategory('');
-    setAmount('');
-    setDescription('');
-    setDate('');
+    setCategory("");
+    setAmount("");
+    setDescription("");
+    setDate("");
   };
 
-const handleDelete = (id) => {
+  const handleDelete = (id) => {
     setConfirmDeleteId(id);
   };
 
   const confirmDelete = () => {
-    setTransactions(transactions.filter(t => t.id !== confirmDeleteId));
+    setTransactions(transactions.filter((t) => t.id !== confirmDeleteId));
     setConfirmDeleteId(null);
   };
 
@@ -114,10 +120,10 @@ const handleDelete = (id) => {
 
   const handleCancelEdit = () => {
     setEditingId(null);
-    setCategory('');
-    setAmount('');
-    setDescription('');
-    setType('expense');
+    setCategory("");
+    setAmount("");
+    setDescription("");
+    setType("expense");
   };
 
   return (
@@ -125,7 +131,7 @@ const handleDelete = (id) => {
       <h1>💰 Expense Tracker</h1>
 
       {/* Summary Cards */}
-<div className="summary-cards">
+      <div className="summary-cards">
         <div className="card expense-card">
           <h3>Total Expense</h3>
           <p>${totalExpense.toFixed(2)}</p>
@@ -138,7 +144,9 @@ const handleDelete = (id) => {
           <h3>Investment</h3>
           <p>${totalInvestment.toFixed(2)}</p>
         </div>
-        <div className={`card saving-card ${savings >= 0 ? 'positive' : 'negative'}`}>
+        <div
+          className={`card saving-card ${savings >= 0 ? "positive" : "negative"}`}
+        >
           <h3>Savings</h3>
           <p>${savings.toFixed(2)}</p>
         </div>
@@ -154,22 +162,28 @@ const handleDelete = (id) => {
           </select>
         </div>
 
-<div className="form-group">
-  <label>Date:</label>
-  <input
-    type="date"
-    value={date}
-    onChange={(e) => setDate(e.target.value)}
-    max={new Date().toISOString().split("T")[0]} // prevents future dates
-  />
-</div>
+        <div className="form-group">
+          <label>Date:</label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            max={new Date().toISOString().split("T")[0]} // prevents future dates
+          />
+        </div>
 
         <div className="form-group">
           <label>Category:</label>
-          <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          >
             <option value="">Select Category</option>
-            {categories[type].map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+            {categories[type].map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
         </div>
@@ -199,10 +213,14 @@ const handleDelete = (id) => {
 
         <div className="form-actions">
           <button type="submit" className="submit-btn">
-            {editingId ? 'Update Transaction' : 'Add Transaction'}
+            {editingId ? "Update Transaction" : "Add Transaction"}
           </button>
           {editingId && (
-            <button type="button" onClick={handleCancelEdit} className="cancel-btn">
+            <button
+              type="button"
+              onClick={handleCancelEdit}
+              className="cancel-btn"
+            >
               Cancel
             </button>
           )}
@@ -213,7 +231,9 @@ const handleDelete = (id) => {
       <div className="transactions-list">
         <h2>Recent Transactions</h2>
         {transactions.length === 0 ? (
-          <p className="no-transactions">No transactions yet. Add your first one!</p>
+          <p className="no-transactions">
+            No transactions yet. Add your first one!
+          </p>
         ) : (
           <div className="transactions-table">
             <table>
@@ -228,7 +248,7 @@ const handleDelete = (id) => {
                 </tr>
               </thead>
               <tbody>
-                {transactions.map(transaction => (
+                {transactions.map((transaction) => (
                   <tr key={transaction.id} className={transaction.type}>
                     <td className="date-cell">{transaction.formattedDate}</td>
                     <td className="type-cell">
@@ -239,17 +259,18 @@ const handleDelete = (id) => {
                     <td>{transaction.category}</td>
                     <td>{transaction.description}</td>
                     <td className={`amount-cell ${transaction.type}`}>
-                      {transaction.type === 'expense' ? '-' : '+'}${transaction.amount.toFixed(2)}
+                      {transaction.type === "expense" ? "-" : "+"}$
+                      {transaction.amount.toFixed(2)}
                     </td>
                     <td className="actions-cell">
-                      <button 
-                        onClick={() => handleEdit(transaction)} 
+                      <button
+                        onClick={() => handleEdit(transaction)}
                         className="edit-btn"
                       >
                         ✏️
                       </button>
-                      <button 
-                        onClick={() => handleDelete(transaction.id)} 
+                      <button
+                        onClick={() => handleDelete(transaction.id)}
                         className="delete-btn"
                       >
                         🗑️
@@ -267,8 +288,13 @@ const handleDelete = (id) => {
           <div className="modal-box">
             <p>Are you sure you want to delete this transaction?</p>
             <div className="modal-actions">
-              <button className="modal-ok-btn" onClick={confirmDelete}> Delete</button>
-              <button className="modal-cancel-btn" onClick={cancelDelete}>Cancel</button>
+              <button className="modal-ok-btn" onClick={confirmDelete}>
+                {" "}
+                Delete
+              </button>
+              <button className="modal-cancel-btn" onClick={cancelDelete}>
+                Cancel
+              </button>
             </div>
           </div>
         </div>

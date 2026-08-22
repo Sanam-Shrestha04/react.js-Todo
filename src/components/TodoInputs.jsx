@@ -1,8 +1,12 @@
-import React from 'react'
+import React from "react";
 
-export default function TodoInputs({ handleAddTodos, setTodoValue, todoValue }) {
+export default function TodoInputs({
+  handleAddTodos,
+  setTodoValue,
+  todoValue,
+}) {
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleAddTodos(todoValue);
     }
   };
@@ -13,9 +17,9 @@ export default function TodoInputs({ handleAddTodos, setTodoValue, todoValue }) 
         value={todoValue}
         onChange={(e) => setTodoValue(e.target.value)}
         onKeyPress={handleKeyPress}
-        placeholder='Enter Task...'
+        placeholder="Enter Task..."
       />
       <button onClick={() => handleAddTodos(todoValue)}>🎀</button>
     </div>
-  )
+  );
 }

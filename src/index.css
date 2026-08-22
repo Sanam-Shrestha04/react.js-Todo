@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&display=swap");
 
 body {
-  background: url('./assets/bow.png');
+  background: url("./assets/bow.png");
   background-repeat: repeat;
   background-size: 300px;
   background-attachment: fixed;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   color: #5c2d45;
 }
 
@@ -22,20 +22,19 @@ body {
   background: white;
   border-radius: 30px;
   padding: 10px 20px;
-  font-family: 'Dancing Script', cursive;
+  font-family: "Dancing Script", cursive;
   font-size: 1.4em;
   color: #d6336c;
   box-shadow: 0 4px 10px rgba(255, 182, 193, 0.4);
 }
 
 .inputContainer {
-  position: relative;   /* so the button can sit on top of the input */
+  position: relative; /* so the button can sit on top of the input */
   display: flex;
   width: 100%;
   max-width: 860px;
   margin: 0 auto;
 }
-
 
 .inputContainer input {
   flex: 1;
@@ -55,7 +54,7 @@ body {
 }
 
 .inputContainer button {
-  position: absolute;   /* floats over the input instead of taking its own column */
+  position: absolute; /* floats over the input instead of taking its own column */
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
@@ -86,8 +85,8 @@ body {
   max-width: 860px;
   margin: 0 auto;
   align-items: center;
-  list-style: none;   /* remove bullet indent */
-  padding: 0;          /* remove default UL left padding */
+  list-style: none; /* remove bullet indent */
+  padding: 0; /* remove default UL left padding */
 }
 
 .todoItem {
@@ -173,7 +172,7 @@ nav {
 
 nav a {
   text-decoration: none;
-  font-family: 'Dancing Script', cursive;
+  font-family: "Dancing Script", cursive;
   font-size: 1.4em;
   color: #d6336c;
   background: #fff;
