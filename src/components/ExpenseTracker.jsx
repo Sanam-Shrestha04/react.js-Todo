@@ -14,6 +14,8 @@ const [transactions, setTransactions] = useState(() => {
   const [description, setDescription] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [date, setDate] = useState('');
+
 
   // Load transactions from localStorage on mount
 // Load transactions from localStorage on mount
@@ -54,22 +56,22 @@ const totalIncome = transactions
       alert('Please fill in all fields');
       return;
     }
-
-    const transactionData = {
-      id: editingId || uuidv4(),
-      type,
-      category,
-      amount: parseFloat(amount),
-      description: description || category,
-      date: new Date().toISOString(),
-      formattedDate: new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
-    };
+const transactionDate = date ? new Date(date) : new Date();
+const transactionData = {
+  id: editingId || uuidv4(),
+  type,
+  category,
+  amount: parseFloat(amount),
+  description: description || category,
+  date: transactionDate.toISOString(),
+  formattedDate: transactionDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+};
 
     if (editingId) {
       // Update existing transaction
@@ -86,6 +88,7 @@ const totalIncome = transactions
     setCategory('');
     setAmount('');
     setDescription('');
+    setDate('');
   };
 
 const handleDelete = (id) => {
@@ -150,6 +153,16 @@ const handleDelete = (id) => {
             <option value="income">Income</option>
           </select>
         </div>
+
+<div className="form-group">
+  <label>Date:</label>
+  <input
+    type="date"
+    value={date}
+    onChange={(e) => setDate(e.target.value)}
+    max={new Date().toISOString().split("T")[0]} // prevents future dates
+  />
+</div>
 
         <div className="form-group">
           <label>Category:</label>
