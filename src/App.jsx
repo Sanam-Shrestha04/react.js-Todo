@@ -3,6 +3,7 @@ import { NavLink, Routes, Route } from "react-router-dom";
 import TodoList from "./components/TodoList";
 import TodoInputs from "./components/TodoInputs";
 import ExpenseTracker from "./components/ExpenseTracker";
+import PeriodTracker from "./components/PeriodTracker";
 
 export default function App() {
   const [todos, setTodos] = useState(() => {
@@ -50,10 +51,9 @@ export default function App() {
     <>
       {/* Navigation bar */}
       <nav>
-        <NavLink to="/" end>
-          Todo
-        </NavLink>
+        <NavLink to="/" end>Todo</NavLink>
         <NavLink to="/tracker">Expense Tracker</NavLink>
+        <NavLink to="/period-tracker">Period Tracker</NavLink>
       </nav>
 
       {/* Page routes */}
@@ -78,6 +78,7 @@ export default function App() {
           }
         />
         <Route path="/tracker" element={<ExpenseTracker />} />
+        <Route path="/period-tracker" element={<PeriodTracker />} />
       </Routes>
     </>
   );
