@@ -52,7 +52,7 @@ export default function App() {
       {/* Navigation bar */}
       <nav>
         <NavLink to="/" end>Todo</NavLink>
-        <NavLink to="/tracker">Expense Tracker</NavLink>
+        <NavLink to="/expense-tracker">Expense Tracker</NavLink>
         <NavLink to="/period-tracker">Period Tracker</NavLink>
       </nav>
 
@@ -77,7 +77,7 @@ export default function App() {
             </div>
           }
         />
-        <Route path="/tracker" element={<ExpenseTracker />} />
+        <Route path="/expense-tracker" element={<ExpenseTracker />} />
         <Route path="/period-tracker" element={<PeriodTracker />} />
       </Routes>
     </>
