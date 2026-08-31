@@ -51,7 +51,7 @@ const ExpenseTracker = () => {
   const savings = totalIncome - totalExpense;
 
   const categories = {
-    expense: ["Grocery", "Travel", "Office Lunch", "Snack", "Shopping", "Other"],
+    expense: ["Grocery", "Travel", "Office Lunch", "Snack", "Shopping", "Rent", "Other"],
     income: ["Salary", "Funding", "Investment", "Other"],
   };
 
@@ -136,6 +136,13 @@ const handleSubmit = (e) => {
   };
 
   const monthOptions = Object.keys(monthlyData).sort(); // ["2026-07", "2026-08", ...]
+  
+  const formatMonth = (monthKey) => {
+  const [year, month] = monthKey.split("-");
+  const date = new Date(year, month - 1); // month is 0-indexed
+  return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+};
+
 
   return (
     <div className="expense-tracker">
@@ -250,7 +257,7 @@ const handleSubmit = (e) => {
 
       {/* Transactions List */}
       <div className="transactions-list">
-        <h2>Transactions for {selectedMonth}</h2>
+        <h2>Transactions for {formatMonth(selectedMonth)}</h2>
         {transactions.length === 0 ? (
           <p className="no-transactions">No transactions yet. Add your first one!</p>
         ) : (
