@@ -39,3 +39,29 @@
   margin-top: 20px;
   font-weight: 500;
 }
+
+.category-summary {
+  margin-top: 20px;
+}
+
+.category-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.category-summary th,
+.category-summary td {
+  border: 1px solid #f8b4d9;
+  padding: 8px;
+  text-align: center;
+}
+
+.category-summary th {
+  background-color: #ffeaf4;
+  color: #e84a9e;
+}
+
+.category-summary td {
+  background-color: #fff5f9;
+}

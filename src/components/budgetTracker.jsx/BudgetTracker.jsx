@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pie } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import "./BudgetTracker.css";
 
@@ -8,7 +8,6 @@ const BudgetTracker = () => {
   const [totalIncome, setTotalIncome] = useState(0);
   const [expenses, setExpenses] = useState({});
 
-  // ✅ Current month key (YYYY-MM)
   const currentMonthKey = new Date().toISOString().slice(0, 7);
 
   // ✅ Load saved budget for this month
@@ -40,9 +39,15 @@ const BudgetTracker = () => {
     setExpenses(expenseTotals);
   }, [currentMonthKey]);
 
-  // ✅ Handle budget input
+  // ✅ Handle budget input (optional fields allowed)
   const handleBudgetChange = (category, value) => {
-    setBudget({ ...budget, [category]: parseFloat(value) || 0 });
+    if (value === "") {
+      const updated = { ...budget };
+      delete updated[category];
+      setBudget(updated);
+    } else {
+      setBudget({ ...budget, [category]: parseFloat(value) || 0 });
+    }
   };
 
   // ✅ Calculate total income
@@ -51,23 +56,39 @@ const BudgetTracker = () => {
     setTotalIncome(total);
   }, [budget]);
 
-  // ✅ Prepare chart data
+  // ✅ Prepare comparative chart data
+  const categories = Array.from(
+    new Set([...Object.keys(budget), ...Object.keys(expenses)])
+  );
+
   const chartData = {
-    labels: Object.keys(expenses),
+    labels: categories,
     datasets: [
       {
-        label: "Expenses",
-        data: Object.keys(expenses).map((cat) => expenses[cat]),
+        label: "Budget",
+        data: categories.map((cat) => budget[cat] || 0),
         backgroundColor: [
-          "#ff9ebc",
           "#f8b4d9",
-          "#fdd0e8",
           "#ffc7d4",
+          "#ff9ebc",
+          "#fdd0e8",
           "#ffb3c6",
           "#f9a8d4",
           "#f472b6",
         ],
-        borderWidth: 1,
+      },
+      {
+        label: "Expenses",
+        data: categories.map((cat) => expenses[cat] || 0),
+        backgroundColor: [
+          "#e84a9e",
+          "#d946ef",
+          "#ec4899",
+          "#db2777",
+          "#be185d",
+          "#9d174d",
+          "#831843",
+        ],
       },
     ],
   };
@@ -84,7 +105,7 @@ const BudgetTracker = () => {
               <label>{category}:</label>
               <input
                 type="number"
-                placeholder="Enter budget"
+                placeholder="Optional"
                 value={budget[category] || ""}
                 onChange={(e) => handleBudgetChange(category, e.target.value)}
               />
@@ -94,8 +115,8 @@ const BudgetTracker = () => {
       </div>
 
       <div className="chart-section">
-        <h3>Expense Distribution</h3>
-        <Pie data={chartData} />
+        <h3>Budget vs Expenses</h3>
+        <Doughnut data={chartData} />
       </div>
 
       <div className="summary">
@@ -104,6 +125,39 @@ const BudgetTracker = () => {
           Total Expenses: $
           {Object.values(expenses).reduce((sum, val) => sum + val, 0).toFixed(2)}
         </p>
+      </div>
+
+      <div className="category-summary">
+        <h3>Category Breakdown</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Budget</th>
+              <th>Expense</th>
+              <th>Remaining</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.map((cat) => {
+              const b = budget[cat] || 0;
+              const e = expenses[cat] || 0;
+              const remaining = b - e;
+              return (
+                <tr key={cat}>
+                  <td>{cat}</td>
+                  <td>${b.toFixed(2)}</td>
+                  <td>${e.toFixed(2)}</td>
+                  <td
+                    style={{ color: remaining < 0 ? "red" : "#e84a9e", fontWeight: 500 }}
+                  >
+                    ${remaining.toFixed(2)}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
