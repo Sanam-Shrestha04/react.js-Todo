@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&display=swap");
+
+.budget-tracker {
+  background-color: #fff5f9;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(232, 74, 158, 0.15);
+  font-family: "Poppins", sans-serif;
+  color: #e84a9e;
+}
+
+.budget-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.budget-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.budget-row input {
+  border: 2px solid #f8b4d9;
+  border-radius: 8px;
+  padding: 6px;
+  width: 120px;
+  background-color: #ffeaf4;
+  color: #e84a9e;
+}
+
+.chart-section {
+  margin-top: 20px;
+}
+
+.summary {
+  margin-top: 20px;
+  font-weight: 500;
+}
