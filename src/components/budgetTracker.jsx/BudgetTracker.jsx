@@ -7,28 +7,31 @@ const BudgetTracker = () => {
   const [budget, setBudget] = useState({});
   const [totalIncome, setTotalIncome] = useState(0);
   const [expenses, setExpenses] = useState({});
+  const [selectedMonth, setSelectedMonth] = useState(
+    new Date().toISOString().slice(0, 7) // default: current month
+  );
 
-  const currentMonthKey = new Date().toISOString().slice(0, 7);
-
-  // ✅ Load saved budget for this month
+  // ✅ Load saved budget for selected month
   useEffect(() => {
     const savedBudgets = JSON.parse(localStorage.getItem("monthlyBudgets")) || {};
-    if (savedBudgets[currentMonthKey]) {
-      setBudget(savedBudgets[currentMonthKey]);
+    if (savedBudgets[selectedMonth]) {
+      setBudget(savedBudgets[selectedMonth]);
+    } else {
+      setBudget({});
     }
-  }, [currentMonthKey]);
+  }, [selectedMonth]);
 
   // ✅ Save budget whenever it changes
   useEffect(() => {
     const savedBudgets = JSON.parse(localStorage.getItem("monthlyBudgets")) || {};
-    savedBudgets[currentMonthKey] = budget;
+    savedBudgets[selectedMonth] = budget;
     localStorage.setItem("monthlyBudgets", JSON.stringify(savedBudgets));
-  }, [budget, currentMonthKey]);
+  }, [budget, selectedMonth]);
 
-  // ✅ Load expenses from ExpenseTracker for this month
+  // ✅ Load expenses from ExpenseTracker for selected month
   useEffect(() => {
     const savedExpenses = JSON.parse(localStorage.getItem("monthlyData")) || {};
-    const monthData = savedExpenses[currentMonthKey]?.transactions || [];
+    const monthData = savedExpenses[selectedMonth]?.transactions || [];
 
     const expenseTotals = monthData.reduce((acc, item) => {
       if (item.type === "expense") {
@@ -37,7 +40,7 @@ const BudgetTracker = () => {
       return acc;
     }, {});
     setExpenses(expenseTotals);
-  }, [currentMonthKey]);
+  }, [selectedMonth]);
 
   // ✅ Handle budget input (optional fields allowed)
   const handleBudgetChange = (category, value) => {
@@ -93,12 +96,38 @@ const BudgetTracker = () => {
     ],
   };
 
+  // ✅ Generate month options (from saved budgets/expenses)
+  const getMonthOptions = () => {
+    const savedBudgets = JSON.parse(localStorage.getItem("monthlyBudgets")) || {};
+    const savedExpenses = JSON.parse(localStorage.getItem("monthlyData")) || {};
+    const allMonths = new Set([
+      ...Object.keys(savedBudgets),
+      ...Object.keys(savedExpenses),
+    ]);
+    return Array.from(allMonths).sort().reverse(); // latest first
+  };
+
   return (
     <div className="budget-tracker">
-      <h1>💰 Budget Tracker ({currentMonthKey})</h1>
+      <h1>💰 Budget Tracker</h1>
+
+      {/* Month selector */}
+      <div className="month-selector">
+        <label>Select Month:</label>
+        <select
+          value={selectedMonth}
+          onChange={(e) => setSelectedMonth(e.target.value)}
+        >
+          {getMonthOptions().map((month) => (
+            <option key={month} value={month}>
+              {month}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div className="budget-inputs">
-        <h3>Set Your Monthly Budget</h3>
+        <h3>Set Your Monthly Budget ({selectedMonth})</h3>
         {["Grocery", "Travel", "Office Lunch", "Snack", "Shopping", "Rent", "Other"].map(
           (category) => (
             <div key={category} className="budget-row">
